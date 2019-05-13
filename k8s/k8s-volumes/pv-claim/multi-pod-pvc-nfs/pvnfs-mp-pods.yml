@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-nfs-pod 
+  labels:
+    name: nginx-nfs-pod
+spec:
+  containers:
+    - name: nginx-nfs-pod
+      image: fedora/nginx 
+      ports:
+        - name: web
+          containerPort: 80
+      volumeMounts:
+        - name: nfsvol 
+          mountPath: /usr/share/nginx/html 
+  volumes:
+    - name: nfsvol
+      persistentVolumeClaim:
+        claimName: nfs-pvc 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-nfs-pod 
+  labels:
+    name: busybox-nfs-pod
+spec:
+  containers:
+  - name: busybox-nfs-pod
+    image: busybox 
+    command: ["sleep", "60000"]
+    volumeMounts:
+    - name: nfsvol-2 
+      mountPath: /usr/share/busybox  
+      readOnly: false
+  volumes:
+  - name: nfsvol-2
+    persistentVolumeClaim:
+      claimName: nfs-pvc 

@@ -1,0 +1,13 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: access-httpd
+spec:
+  podSelector:
+    matchLabels:
+      run: httpd  
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          access: "true"

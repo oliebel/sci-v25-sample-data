@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-test
+  labels:
+    env: nginx-test
+spec:
+  containers:
+  - name: nginx
+    image: docker.io/nginx:latest
+    imagePullPolicy: IfNotPresent
+  priorityClassName: low
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-prod
+  labels:
+    env: production-stage
+spec:
+  containers:
+  - name: nginx
+    image: docker.io/httpd:2.4.32
+    imagePullPolicy: IfNotPresent
+  priorityClassName: high
+

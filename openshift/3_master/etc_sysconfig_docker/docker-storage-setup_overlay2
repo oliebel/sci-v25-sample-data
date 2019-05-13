@@ -1,0 +1,13 @@
+# Edit this file to override any configuration options specified in
+# /usr/share/container-storage-setup/container-storage-setup.
+#
+# For more details refer to "man container-storage-setup"
+#
+WIPE_SIGNATURES=true
+STORAGE_DRIVER=overlay2
+DEVS=/dev/sdb
+CONTAINER_ROOT_LV_NAME=dockerlv
+CONTAINER_ROOT_LV_SIZE=100%FREE
+CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
+VG=dockervg
+

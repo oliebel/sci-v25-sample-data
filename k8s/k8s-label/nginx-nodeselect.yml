@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx-select
+  name: nginx-select
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      run: nginx-select
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: nginx-select
+    spec:
+      nodeSelector:
+        release: "stable"
+        tier: "frontend"
+      containers:
+      - image: nginx
+        name: nginx-select
+        resources: {}
+status: {}

@@ -1,0 +1,41 @@
+
+[OSEv3:children]
+nodes
+masters
+nfs
+etcd
+lb
+
+[OSEv3:vars]
+openshift_master_default_subdomain=apps.local1.site
+ansible_ssh_user=root
+openshift_override_hostname_check=true
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=cluster1.local1.site
+openshift_master_cluster_public_hostname=cluster1.local1.site
+openshift_deployment_type=origin
+openshift_master_api_port=8443
+openshift_disable_check=disk_availability,memory_availability
+openshift_master_unsupported_embedded_etcd=true
+openshift_master_console_port=8443
+
+
+[nodes]
+jake1.local1.site  openshift_public_ip=192.168.99.7 openshift_ip=192.168.99.7 openshift_public_hostname=jake1.local1.site openshift_hostname=jake1.local1.site openshift_hosted_registry_storage_kind=nfs openshift_node_labels="{'region': 'infra'}" openshift_schedulable=True ansible_connection=local
+elwood1.local1.site  openshift_public_ip=192.168.99.8 openshift_ip=192.168.99.8 openshift_public_hostname=elwood1.local1.site openshift_hostname=elwood1.local1.site openshift_node_labels="{'region': 'infra'}" openshift_schedulable=True
+cab1.local1.site  openshift_public_ip=192.168.99.9 openshift_ip=192.168.99.9 openshift_public_hostname=cab1.local1.site openshift_hostname=cab1.local1.site openshift_schedulable=True
+
+[masters]
+jake1.local1.site  openshift_public_ip=192.168.99.7 openshift_ip=192.168.99.7 openshift_public_hostname=jake1.local1.site openshift_hostname=jake1.local1.site openshift_hosted_registry_storage_kind=nfs ansible_connection=local
+elwood1.local1.site  openshift_public_ip=192.168.99.8 openshift_ip=192.168.99.8 openshift_public_hostname=elwood1.local1.site openshift_hostname=elwood1.local1.site
+cab1.local1.site  openshift_public_ip=192.168.99.9 openshift_ip=192.168.99.9 openshift_public_hostname=cab1.local1.site openshift_hostname=cab1.local1.site
+
+[nfs]
+jake1.local1.site  openshift_public_ip=192.168.99.7 openshift_ip=192.168.99.7 openshift_public_hostname=jake1.local1.site openshift_hostname=jake1.local1.site openshift_hosted_registry_storage_kind=nfs ansible_connection=local
+
+[etcd]
+jake1.local1.site  openshift_public_ip=192.168.99.7 openshift_ip=192.168.99.7 openshift_public_hostname=jake1.local1.site openshift_hostname=jake1.local1.site openshift_hosted_registry_storage_kind=nfs ansible_connection=local
+elwood1.local1.site  openshift_public_ip=192.168.99.8 openshift_ip=192.168.99.8 openshift_public_hostname=elwood1.local1.site openshift_hostname=elwood1.local1.site
+cab1.local1.site  openshift_public_ip=192.168.99.9 openshift_ip=192.168.99.9 openshift_public_hostname=cab1.local1.site openshift_hostname=cab1.local1.site
+
+[lb]

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydirpod
+  labels:
+    app: emptydirpod
+spec:
+  containers:
+    - name: centos
+      image: centos
+      command: [bash, -c]
+      args: ['for ((i=0;;i++));do echo "$i:$(date)">>/tempdata/counter.logs;sleep 1;done']
+      volumeMounts:
+      - mountPath: /tempdata
+        name: data
+  volumes:
+    - name: data
+      emptyDir: {}

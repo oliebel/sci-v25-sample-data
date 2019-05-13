@@ -1,0 +1,33 @@
+slapdtls:
+  build: slapdtls/
+  container_name: slapdtls
+  ports:
+    - 389:389
+  volumes:
+    - ldap-db:/var/lib/ldap
+    - ldap-certs:/etc/openldap/certs/:ro
+  restart: unless-stopped
+
+httpproxy:
+  build: http-proxy/
+  container_name: httpproxy
+  hostname: jake1.local1.site
+  ports:
+    - 5443:5443
+  links:
+    - registry:registry
+    - slapdtls:slapdtls
+  volumes:
+    - ldap-certs:/etc/ssl/certs/:ro
+  restart: unless-stopped
+
+registry:
+  image: registry
+  container_name: registry
+  ports:
+    - 127.0.0.1:5000:5000
+  volumes:
+    - /imagestore:/var/lib/registry
+  restart: unless-stopped
+
+

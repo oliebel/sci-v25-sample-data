@@ -1,0 +1,27 @@
+# Achtung - Timeouts muessen ggf. noch angepasst werden
+pssh systemctl enable pcsd --now
+pcs cluster auth jake1 cab1 elwood1
+pcs cluster start --all
+pcs cluster status
+# alle nodes muessen online sein
+pcs property set stonith-enabled=false
+pcs resource create Service_IP IPaddr2 ip=192.168.99.50 cidr_netmask=24 nic=ens32 op monitor interval=20
+pcs resource create kube-apiserver systemd:kube-apiserver --group k8master_grp op monitor interval=20 start timeout=70 op stop timeout=70 meta target-role=Stopped
+pcs resource create kube-controller-manager systemd:kube-controller-manager --group k8master_grp op monitor interval=20 start timeout=80 op stop timeout=80 meta target-role=Stopped
+pcs resource create kube-scheduler systemd:kube-scheduler --group k8master_grp op monitor interval=20 start timeout=90 op stop timeout=90 meta target-role=Stopped
+pcs resource clone k8master_grp
+pcs resource create etcd systemd:etcd --clone op monitor interval=20 start timeout=60 op stop timeout=60 meta interleave=true
+pcs constraint colocation add Service_IP k8master_grp-clone INFINITY
+pcs constraint colocation add k8master_grp-clone etcd-clone INFINITY
+pcs constraint order etcd-clone then k8master_grp-clone kind=Optional
+pcs resource enable kube-apiserver
+pcs resource enable kube-controller-manager
+pcs resource enable kube-scheduler
+
+
+
+
+
+
+
+

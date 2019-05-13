@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: hello-daemonset-mod
+spec:
+  selector:
+      matchLabels:
+        name: dsrestrictednodes 
+  template:
+    metadata:
+      labels:
+        name: dsrestrictednodes 
+    spec:
+      nodeSelector:
+        DSNode: "yes"
+      containers:
+      - image: openshift/hello-openshift
+        imagePullPolicy: Always
+        name: ds-container
+        ports:
+        - containerPort: 80
+          protocol: TCP

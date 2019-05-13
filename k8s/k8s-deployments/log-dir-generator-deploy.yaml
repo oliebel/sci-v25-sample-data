@@ -1,0 +1,35 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: log-dir-generator-deploy
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      tier: backend
+      track: test
+  template:
+    metadata:
+      labels:
+        tier: backend
+        track: test
+    spec:
+      containers:
+      - name: centos-rs
+        image: docker.io/centos:latest
+        imagePullPolicy: IfNotPresent
+        command: [ "sh", "-c"]
+        args: ['test -d  /hostpath-mount/"$(MY_POD_NAME)" || mkdir /hostpath-mount/"$(MY_POD_NAME)"; for ((i=0;;i++));do echo "$i:$(date)">>/hostpath-mount/"$(MY_POD_NAME)"/counter.logs;sleep 1;done']
+        env:
+         - name: MY_POD_NAME
+           valueFrom:
+             fieldRef:
+               fieldPath: metadata.name
+        volumeMounts:
+         - mountPath: /hostpath-mount
+           name: logvolume
+      volumes:
+      - name: logvolume
+        hostPath:
+           path: /data/logs
+

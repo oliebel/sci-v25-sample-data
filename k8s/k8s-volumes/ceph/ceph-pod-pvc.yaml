@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: ceph-mysql
+spec: 
+  containers: 
+    - name: ceph-mysql
+      image: mysql:5.7 
+      name: mysql
+      args:
+        - "--ignore-db-dir"
+        - "lost+found"
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: topsecret
+      ports:
+        - containerPort: 3306
+          name: mysql
+      volumeMounts: 
+        - name: mysql-pv-ceph
+          mountPath: /var/lib/mysql
+  volumes: 
+    - name: mysql-pv-ceph
+      persistentVolumeClaim:
+        claimName: ceph-pvclaim

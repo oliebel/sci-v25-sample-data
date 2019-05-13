@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tcp-live-check
+spec:
+  containers:
+  - name: tcp-live-check
+    image: httpd
+    livenessProbe:
+      tcpSocket:
+        port: 81
+      initialDelaySeconds: 30
+      timeoutSeconds: 1
+    ports:
+    - containerPort: 80

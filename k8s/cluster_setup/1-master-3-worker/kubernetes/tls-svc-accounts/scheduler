@@ -1,0 +1,8 @@
+###
+# kubernetes scheduler config
+
+# default config should be adequate
+
+# Add your own!
+#KUBE_SCHEDULER_ARGS=""
+KUBE_SCHEDULER_ARGS="--master=http://192.168.99.7:8080"

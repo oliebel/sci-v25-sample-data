@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    stage: "1"
+    tier: backend
+    track: testing
+  name: svc-nginx
+spec:
+  clusterIP: 
+  externalIPs:
+  - 192.168.99.50
+  ports:
+  - nodePort: 
+    port: 30000
+    protocol: TCP
+    targetPort: 80
+  selector:
+    stage: "1"
+    tier: backend
+    track: testing
+  type: NodePort

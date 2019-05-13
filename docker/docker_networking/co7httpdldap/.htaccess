@@ -1,0 +1,5 @@
+AuthType Basic
+AuthName "LDAP Authentication"
+AuthBasicProvider ldap
+AuthLDAPURL "ldap://slapd/dc=local,dc=site?uid?sub"
+require valid-user

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: invalid-pod
+  namespace: k8limited
+spec:
+  containers:
+  - name: httpd
+    image: httpd
+    resources:
+      limits:
+        cpu: "4"
+        memory: 2Gi

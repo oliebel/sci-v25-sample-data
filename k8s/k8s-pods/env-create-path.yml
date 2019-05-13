@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-create-path-pod
+spec:
+  containers:
+   - name: doesntmatter
+     image: centos:latest
+     command: [ "sh", "-c"]
+     args: ['test -d  /hostpath-mount/"$(MY_POD_NAME)" || mkdir /hostpath-mount/"$(MY_POD_NAME)"; for ((i=0;;i++));do echo "$i:$(date)">>/hostpath-mount/"$(MY_POD_NAME)"/counter.logs;sleep 1;done']
+     env:
+       - name: MY_POD_NAME
+         valueFrom:
+           fieldRef:
+             fieldPath: metadata.name
+     volumeMounts:
+     - mountPath: /hostpath-mount
+       name: test-volume
+  volumes:
+  - name: test-volume
+    hostPath:
+      path: /tmp
+
+
+

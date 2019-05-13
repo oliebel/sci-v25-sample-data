@@ -1,0 +1,7 @@
+###
+# The following values are used to configure the kubernetes controller-manager
+
+# defaults from config and apiserver should be adequate
+
+# Add your own!
+KUBE_CONTROLLER_MANAGER_ARGS="--leader-elect --master=http://192.168.99.50:8080 --service-account-private-key-file=/srv/kubernetes/server.key"

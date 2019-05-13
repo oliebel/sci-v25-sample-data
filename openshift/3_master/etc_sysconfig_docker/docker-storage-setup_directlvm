@@ -1,0 +1,8 @@
+# Edit this file to override any configuration options specified in
+# /usr/share/container-storage-setup/container-storage-setup.
+#
+# For more details refer to "man container-storage-setup"
+CONTAINER_THINPOOL=docker-thinpool
+VG=docker-thinpool
+DEVS=sdc
+DATA_SIZE=18GB

@@ -1,0 +1,6 @@
+#########################################################
+ACHTUNG:
+Der Key in der Datei ceph-secret.yaml muss natuerlich
+auf dem betreffenden System neu ausgelesen und in die 
+Datei eingefuegt werden!
+#########################################################

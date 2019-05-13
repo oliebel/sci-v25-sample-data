@@ -1,0 +1,7 @@
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: ClusterConfiguration
+kubernetesVersion: stable
+apiServer:
+  certSANs:
+  - "cluster1.local1.site"
+controlPlaneEndpoint: "cluster1.local1.site:6443"

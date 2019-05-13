@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfspod
+  labels:
+    app: nfspod
+spec:
+  containers:
+    - name: centos
+      image: centos
+      command: [bash, -c]
+      args: ['for ((i=0;;i++));do echo "$i:$(date)">>/nfsmount-local/counter.logs;sleep 1;done']
+      volumeMounts:
+      - mountPath: "/nfsmount-local"
+        name: nfs-share
+  volumes:
+    - name: nfs-share
+      nfs:
+        server: 192.168.99.12
+        path: "/nfsshare"

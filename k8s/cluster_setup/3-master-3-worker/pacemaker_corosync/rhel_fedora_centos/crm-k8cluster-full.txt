@@ -1,0 +1,37 @@
+node 1: jake1
+node 2: elwood1
+node 3: cab1
+primitive Service_IP IPaddr2 \
+	params ip=192.168.99.50 cidr_netmask=24 nic=eth0 \
+	op monitor interval=20 \
+	op start timeout=90 interval=0
+primitive etcd systemd:etcd \
+	op monitor interval=30 \
+	op start timeout=60 interval=0
+primitive kube-apiserver systemd:kube-apiserver \
+	op monitor interval=20 \
+	op start timeout=70 interval=0 \
+	op stop timeout=70 interval=0
+primitive kube-controller-manager systemd:kube-controller-manager \
+	op monitor interval=20 \
+	op start timeout=80 interval=0 \
+	op stop timeout=80 interval=0
+primitive kube-scheduler systemd:kube-scheduler \
+	op monitor interval=20 \
+	op start timeout=90 interval=0 \
+	op stop timeout=90 interval=0
+group k8master_grp kube-apiserver kube-controller-manager kube-scheduler
+clone etcd_clone etcd \
+	meta target-role=Started
+clone k8master_grp_clone k8master_grp \
+	meta interleave=true target-role=Started
+colocation col_ip-on-k8master inf: Service_IP k8master_grp_clone
+colocation col_k8master-on-etcd inf: k8master_grp_clone etcd_clone
+order ord_etcd-before-k8master 0: etcd_clone k8master_grp_clone
+property cib-bootstrap-options: \
+	have-watchdog=false \
+	dc-version=1.1.15-11.el7_3.2-e174ec8 \
+	cluster-infrastructure=corosync \
+	cluster-name=pcmkcluster \
+	stonith-enabled=false \
+	last-lrm-refresh=1487458464

@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    tier: www-frontend
+    track: production
+  name: ngx-dep
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      tier: www-frontend
+      track: production
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        tier: www-frontend
+        track: production
+    spec:
+      containers:
+      - image: nginx:latest
+        imagePullPolicy: IfNotPresent
+        name: ngx-dep

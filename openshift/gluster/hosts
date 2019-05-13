@@ -1,0 +1,97 @@
+[OSEv3:children]
+nodes
+masters
+glusterfs
+nfs
+etcd
+lb
+#new_nodes
+
+[OSEv3:vars]
+openshift_master_default_subdomain=apps.local1.site
+ansible_ssh_user=root
+openshift_override_hostname_check=true
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=cluster1.local1.site
+openshift_master_cluster_public_hostname=cluster1.local1.site
+openshift_deployment_type=origin
+openshift_master_api_port=8443
+openshift_disable_check=disk_availability,memory_availability,package_version,docker_image_availability
+openshift_master_console_port=8443
+openshift_enable_unsupported_configurations=True
+openshift_metrics_install_metrics=true
+
+
+#openshift_logging_install_logging=true
+#openshift_logging_es_memory_limit=2G
+#openshift_logging_fluentd_image=openshift/origin-logging-fluentd:v3.11
+#openshift_logging_elasticsearch_image=openshift/origin-logging-elasticsearch:v3.11
+#openshift_logging_curator_image=openshift/origin-logging-curator:v3.11
+#openshift_logging_kibana_image=openshift/origin-logging-kibana:v3.11
+#openshift_logging_kibana_proxy_image=openshift/origin-logging-auth-proxy:v3.11
+### Image-Versionierung nur verwenden, wenn das Default Setup nicht klappt
+#openshift_logging_es_cluster_size=2
+
+#openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_logging_es_pvc_size=2G
+#openshift_logging_es_pvc_dynamic=true
+#openshift_logging_es_pvc_storage_class_name="glusterfs-storage"
+
+# openshift_logging_es_pvc_storage_class_name="glusterfs-storage-block"
+# Achtung: 'Block' macht bis 3.11 einschl. gegebenenfalls Probleme!
+
+
+
+
+#openshift_metrics_cassandra_image="docker.io/openshift/origin-metrics-cassandra:v3.11.0"
+#openshift_metrics_hawkular_metrics_image="docker.io/openshift/origin-metrics-hawkular-metrics:v3.11.0"
+#openshift_metrics_heapster_image="docker.io/openshift/origin-metrics-heapster:v3.11.0"
+#openshift_metrics_schema_installer_image="docker.io/alv91/origin-metrics-schema-installer:v3.10.0"
+
+
+openshift_storage_glusterfs_namespace=app-storage
+openshift_storage_glusterfs_storageclass=true
+openshift_storage_glusterfs_storageclass_default=false
+openshift_storage_glusterfs_block_deploy=true
+openshift_storage_glusterfs_block_host_vol_size=20
+openshift_storage_glusterfs_block_host_vol_max=100
+openshift_storage_glusterfs_wipe=true
+openshift_storage_glusterfs_heketi_wipe=true
+openshift_storage_glusterfs_block_storageclass=true
+openshift_storage_glusterfs_block_storageclass_default=false
+
+
+
+[masters]
+jake1.local1.site
+elwood1.local1.site
+cab1.local1.site
+
+
+[etcd]
+jake1.local1.site
+elwood1.local1.site
+cab1.local1.site
+
+[nodes]
+jake1.local1.site openshift_node_group_name='node-config-all-in-one'
+elwood1.local1.site openshift_node_group_name='node-config-all-in-one'
+cab1.local1.site openshift_node_group_name='node-config-all-in-one'
+
+[nfs]
+jake1.local1.site openshift_hosted_registry_storage_kind=nfs ansible_connection=local
+
+
+[lb]
+
+#[new_nodes]
+#matt1.local1.site openshift_node_group_name='node-config-infra'
+
+[glusterfs]
+jake1.local1.site glusterfs_devices='[ "/dev/sdc" ]'
+cab1.local1.site glusterfs_devices='[ "/dev/sdc" ]'
+elwood1.local1.site glusterfs_devices='[ "/dev/sdc" ]'
+
+

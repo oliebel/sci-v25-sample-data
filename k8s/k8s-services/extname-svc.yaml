@@ -1,0 +1,9 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: redirect-svc
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: kubernetes.io
+

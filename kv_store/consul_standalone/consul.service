@@ -1,0 +1,11 @@
+[Unit]
+Description=Consul Startup process
+After=network.target
+ 
+[Service]
+Type=simple
+ExecStart=/bin/bash -c '/usr/local/bin/consul agent -config-dir /etc/consul/'
+TimeoutStartSec=0
+ 
+[Install]
+WantedBy=default.target

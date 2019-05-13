@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvclaim-pod
+  labels:
+    app: pvclaim-pod
+spec:
+  containers:
+    - name: pv-claim-pod
+      image: centos
+      command: [bash, -c]
+      args: ['for ((i=0;;i++));do echo "$i:$(date)">>/nfsclaim-mount/counter.logs;sleep 1;done']
+      volumeMounts:
+      - mountPath: "/nfsclaim-mount"
+        name: pvnfs
+  volumes:
+    - name: pvnfs
+      persistentVolumeClaim:
+       claimName: pvnfsclaim

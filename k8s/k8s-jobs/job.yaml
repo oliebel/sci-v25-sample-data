@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: packagequery
+spec:
+  template:
+    metadata:
+      name: packagequery
+    spec:
+      containers:
+      - name: packagequery-co7
+        image: centos:latest
+        command: ["/usr/bin/rpm",  "-qa"]
+      restartPolicy: Never

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: capadd
+spec:
+  containers:
+  - name: co7caps
+    image: docker.io/centos:latest
+    command: ["/bin/bash","-c","sleep 5000"]
+    securityContext:
+      capabilities:
+        add: ["SYS_ADMIN", "NET_ADMIN", "SYS_TIME"]
+

@@ -1,0 +1,4 @@
+Eine Moeglichkeit, multiple, immer gleichnamige NFS-Provisioner 
+auf multiplen Nodes per StatefulSet auszurollen, kann darin
+bestehen, einen dedizierten Service fuer jedes STS auszurollen.
+Dazu jeweils nfs-provisioner-<Nummer> entsprechend subtituieren!

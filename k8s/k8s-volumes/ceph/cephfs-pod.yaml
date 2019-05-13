@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cephfs-ldap-pod
+spec:
+  containers:
+  - name: cephfs-ldap
+    image: slapd:latest
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - mountPath: "/var/lib/ldap"
+      name: cephfs
+  volumes:
+  - name: cephfs
+    cephfs:
+      monitors:
+      - jake1:6789
+      - cab1:6789
+      - elwood1:6789
+      path: /cephfs-ldap-db
+      user: admin
+      secretRef:
+        name: ceph-secret
+      readOnly: false
+

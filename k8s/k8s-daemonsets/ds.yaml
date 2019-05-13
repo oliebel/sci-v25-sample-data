@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: hello-daemonset
+spec:
+  selector:
+      matchLabels:
+        name: hello-daemonset 
+  template:
+    metadata:
+      labels:
+        name: hello-daemonset 
+    spec:
+      containers:
+      - image: openshift/hello-openshift
+        imagePullPolicy: IfNotPresent
+        name: ds-container
+        ports:
+        - containerPort: 80
+          protocol: TCP

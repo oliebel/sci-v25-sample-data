@@ -1,0 +1,78 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-provisioner-1
+  labels:
+    app: nfs-provisioner-1
+spec:
+  ports:
+    - name: nfs
+      port: 2049
+    - name: mountd
+      port: 20048
+    - name: rpcbind
+      port: 111
+    - name: rpcbind-udp
+      port: 111
+      protocol: UDP
+  selector:
+    app: nfs-provisioner-1
+---
+kind: StatefulSet
+apiVersion: apps/v1beta2
+metadata:
+  name: nfs-provisioner-1
+spec:
+  serviceName: nfs-provisioner-1
+  replicas: 1
+  selector:
+    matchLabels:  
+      app: nfs-provisioner-1
+  template:
+    metadata:
+      labels:
+        app: nfs-provisioner-1
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      serviceAccount: nfs-provisioner
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: nfs-provisioner-1
+          image: quay.io/kubernetes_incubator/nfs-provisioner:v1.0.8
+          ports:
+            - name: nfs
+              containerPort: 2049
+            - name: mountd
+              containerPort: 20048
+            - name: rpcbind
+              containerPort: 111
+            - name: rpcbind-udp
+              containerPort: 111
+              protocol: UDP
+          securityContext:
+            capabilities:
+              add:
+                - DAC_READ_SEARCH
+                - SYS_RESOURCE
+          args:
+            - "-provisioner=example.com/nfs"
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SERVICE_NAME
+              value: nfs-provisioner-1
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: export-volume
+              mountPath: /export
+      volumes:
+        - name: export-volume
+          hostPath:
+            path: /srv

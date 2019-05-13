@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata: 
+  name: ceph-pv
+spec: 
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  rbd: 
+    monitors: 
+      - jake1:6789
+      - cab1:6789
+      - elwood1:6789
+    pool: k8rbd
+    image: k8img1
+    user: admin
+    secretRef: 
+      name: ceph-secret
+    fsType: ext4
+    readOnly: false
+  persistentVolumeReclaimPolicy: Retain
+

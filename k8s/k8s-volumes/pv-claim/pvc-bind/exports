@@ -1,0 +1,3 @@
+/data/share1 *(rw,sync,no_root_squash)
+/data/share2 *(rw,sync,no_root_squash)
+

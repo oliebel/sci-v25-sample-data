@@ -1,0 +1,22 @@
+version: '3'
+services:
+  slapd:
+    build: slapd/
+    image: slapd:latest
+    container_name: slapd
+    ports:
+     - "3089:389"
+    volumes:
+     - "/data/slapd:/var/lib/ldap"
+  httpd:
+    build: co7httpldap/
+    image: co7httpd:ldap
+    container_name: httpd
+    ports:
+     - "8080:80"
+    depends_on:
+      - slapd
+    command: >
+      /bin/bash -c "while ! nc slapd 389; do echo sleeping; sleep 1; done; echo Connected && /usr/sbin/httpd -D FOREGROUND"
+    
+

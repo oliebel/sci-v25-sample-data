@@ -1,0 +1,48 @@
+[OSEv3:children]
+nodes
+masters
+nfs
+etcd
+lb
+
+[OSEv3:vars]
+openshift_master_default_subdomain=apps.local1.site
+ansible_ssh_user=root
+openshift_override_hostname_check=true
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=cluster1.local1.site
+openshift_master_cluster_public_hostname=cluster1.local1.site
+openshift_deployment_type=origin
+openshift_master_api_port=8443
+openshift_disable_check=disk_availability,memory_availability,package_version
+openshift_master_console_port=8443
+openshift_enable_unsupported_configurations=True
+openshift_metrics_install_metrics=true
+openshift_logging_install_logging=true
+openshift_metrics_cassandra_image="docker.io/openshift/origin-metrics-cassandra:v3.11.0"
+openshift_metrics_hawkular_metrics_image="docker.io/openshift/origin-metrics-hawkular-metrics:v3.11.0"
+openshift_metrics_heapster_image="docker.io/openshift/origin-metrics-heapster:v3.11.0"
+openshift_metrics_schema_installer_image="docker.io/alv91/origin-metrics-schema-installer:v3.10.0"
+
+
+[masters]
+jake1.local1.site
+elwood1.local1.site
+cab1.local1.site
+
+
+[etcd]
+jake1.local1.site
+elwood1.local1.site
+cab1.local1.site
+
+[nodes]
+jake1.local1.site openshift_node_group_name='node-config-all-in-one'
+elwood1.local1.site openshift_node_group_name='node-config-all-in-one'
+cab1.local1.site openshift_node_group_name='node-config-all-in-one'
+
+[nfs]
+jake1.local1.site openshift_hosted_registry_storage_kind=nfs ansible_connection=local
+
+
+[lb]

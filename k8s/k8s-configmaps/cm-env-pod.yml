@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-env-pod
+spec:
+  containers:
+    - name: test-container
+      image: gcr.io/google_containers/busybox
+      command: [ "/bin/sh", "-c", "env" ]
+      env:
+        - name: FIRSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: cm-test
+              key: vorname
+        - name: LASTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: cm-test
+              key: nachname
+  restartPolicy: Never

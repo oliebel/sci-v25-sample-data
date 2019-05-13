@@ -1,0 +1,5 @@
+# etcd-scale.patch
+spec:
+#  baseImage: quay.io/coreos/etcd:0.9.2
+  size: 5
+

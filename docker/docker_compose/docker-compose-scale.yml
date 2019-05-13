@@ -1,0 +1,17 @@
+version: '3'
+services:
+  slapd:
+    build: slapd/
+    image: slapd:latest
+#    container_name: slapd
+#    ports:
+#     - "3089:389"
+#    volumes:
+#     - "/tmp/slapd:/var/lib/ldap"
+  httpd:
+    build: co7httpldap/
+    image: co7httpd:ldap
+#    container_name: httpd
+#    ports:
+#     - "8080:80"
+
