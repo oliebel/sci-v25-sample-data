@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    tier: www-frontend
+    track: production
+  name: httpd-dep
+spec:
+  clusterIP:
+  externalIPs:
+  - 192.168.99.50
+  ports:
+  - nodePort:
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    tier: www-frontend
+    track: productions
+  type: NodePort
+
+
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    tier: www-frontend
+    track: production
+  name: httpd-dep
+spec:
+  minReadySeconds: 120
+  replicas: 4
+  selector:
+    matchLabels:
+      tier: www-frontend
+      track: production
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        tier: www-frontend
+        track: production
+    spec:
+      containers:
+      - image: httpd:latest
+      #- image: httpd:2.4.39
+        imagePullPolicy: IfNotPresent
+        name: httpd-dep
+        readinessProbe:
+          exec:
+            command: ["/bin/bash","-c","pidof httpd"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+             path: /
+             port: 81
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+
